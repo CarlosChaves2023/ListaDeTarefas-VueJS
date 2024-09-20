@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tecnologia Vue.js</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div id="app">
+        <h1>Lista de Tarefas</h1>
+        <div class="add-task">
+            <input v-model="newTask.text" @keyup.enter="addTask" placeholder="Adicionar nova tarefa">
+            <input type="date" v-model="newTask.date">
+            <input type="time" v-model="newTask.time">
+            <button @click="addTask">Adicionar</button>
+        </div>
+        <ul class="task-list">
+            <li v-for="(task, index) in tasks" :key="index" :class="{ completed: task.completed }">
+                <div v-if="task.editing">
+                    <input v-model="task.editText" placeholder="Tarefa">
+                    <input type="date" v-model="task.editDate">
+                    <input type="time" v-model="task.editTime">
+                    <button @click="finishEdit(index)">Salvar</button>
+                    <button @click="cancelEdit(index)">Cancelar</button>
+                </div>
+                <div v-else>
+                    <input type="checkbox" v-model="task.completed">
+                    <span @dblclick="startEdit(index)">
+                        {{ task.text }} - {{ formatDateTime(task.date, task.time) }}
+                    </span>
+                    <button @click="removeTask(index)">Apagar</button>
+                    <button @click="startEdit(index)">Editar</button>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="./app.js"></script>
+</body>
+</html>
